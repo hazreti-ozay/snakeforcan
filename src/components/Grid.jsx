@@ -8,7 +8,7 @@ export const Grid = ({ snake, food }) => {
       const isSnake = snake.some(
         (segment) => segment.x === x && segment.y === y
       );
-      const isFood = food.x === x && food.y === y;
+      const isFood = food ? food.x === x && food.y === y : false;
       cells.push(<Cell key={`${x}-${y}`} isSnake={isSnake} isFood={isFood} />);
     }
   }

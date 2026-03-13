@@ -2,6 +2,7 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import { useInterval } from './useInterval';
 
 export const GRID_SIZE = 20;
+
 const INITIAL_SNAKE = [
   { x: 10, y: 10 },
   { x: 10, y: 11 },
