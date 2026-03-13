@@ -11,6 +11,7 @@ const INITIAL_DIRECTION = { x: 0, y: -1 }; // UP
 const INITIAL_SPEED = 200;
 
 const generateFood = (currentSnake) => {
+  if (currentSnake.length === GRID_SIZE * GRID_SIZE) return null; // No space left!
   let newFood;
   while (true) {
     newFood = {
@@ -34,6 +35,7 @@ export function useSnakeGame() {
   const [score, setScore] = useState(0);
   const [speed, setSpeed] = useState(INITIAL_SPEED);
   const [isPaused, setIsPaused] = useState(false);
+  const [hasWon, setHasWon] = useState(false);
 
   // Keep track of the last processed direction to prevent 180-degree quick turn self-collisions
   const lastProcessedDirectionRef = useRef(INITIAL_DIRECTION);
@@ -44,6 +46,7 @@ export function useSnakeGame() {
     lastProcessedDirectionRef.current = INITIAL_DIRECTION;
     setFood(generateFood(INITIAL_SNAKE));
     setGameOver(false);
+    setHasWon(false);
     setScore(0);
     setSpeed(INITIAL_SPEED);
     setIsPaused(false);
@@ -67,7 +70,7 @@ export function useSnakeGame() {
   }, []);
 
   const gameLoop = useCallback(() => {
-    if (gameOver || isPaused) return;
+    if (gameOver || isPaused || hasWon) return;
 
     setSnake((prevSnake) => {
       const head = prevSnake[0];
@@ -100,9 +103,17 @@ export function useSnakeGame() {
       const newSnake = [newHead, ...prevSnake];
 
       // Eating food
-      if (newHead.x === food.x && newHead.y === food.y) {
+      if (food && newHead.x === food.x && newHead.y === food.y) {
         setScore((s) => s + 10); // 10 points per apple
-        setFood(generateFood(newSnake));
+        
+        // Victory Condition Check
+        if (newSnake.length === GRID_SIZE * GRID_SIZE) {
+          setHasWon(true);
+          setFood(null);
+        } else {
+          setFood(generateFood(newSnake));
+        }
+        
         // Increase speed slightly, down to a minimum of 60ms
         setSpeed((s) => Math.max(60, s - 5));
       } else {
@@ -114,9 +125,9 @@ export function useSnakeGame() {
 
       return newSnake;
     });
-  }, [direction, food, gameOver, isPaused]);
+  }, [direction, food, gameOver, isPaused, hasWon]);
 
-  useInterval(gameLoop, gameOver || isPaused ? null : speed);
+  useInterval(gameLoop, gameOver || isPaused || hasWon ? null : speed);
 
   return {
     snake,
@@ -129,5 +140,6 @@ export function useSnakeGame() {
     changeDirection,
     resetGame,
     quitGame,
+    hasWon,
   };
 }

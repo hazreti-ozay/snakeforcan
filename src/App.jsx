@@ -15,6 +15,7 @@ function App() {
     changeDirection,
     resetGame,
     quitGame,
+    hasWon,
   } = useSnakeGame();
 
   useEffect(() => {
@@ -25,7 +26,7 @@ function App() {
         e.preventDefault();
       }
 
-      if (gameOver) {
+      if (gameOver || hasWon) {
         if (e.key === "Enter") resetGame();
         return;
       }
@@ -105,7 +106,7 @@ function App() {
               <div className="relative">
                 <Grid snake={snake} food={food} />
 
-                {gameOver && (
+                {gameOver && !hasWon && (
                   <div className="absolute inset-0 bg-[#879571]/90 flex flex-col items-center justify-center font-bold z-10 backdrop-blur-sm">
                     <div className="text-xl mb-4 text-center text-[#111827] drop-shadow-md">
                       GAME OVER
@@ -119,7 +120,24 @@ function App() {
                   </div>
                 )}
 
-                {isPaused && !gameOver && (
+                {hasWon && (
+                  <div className="absolute inset-0 bg-[#879571]/95 flex flex-col items-center justify-center font-bold z-10 backdrop-blur-sm px-2">
+                    <div className="text-xl mb-2 text-center text-[#111827] drop-shadow-md leading-tight">
+                      PERFECT GAME!
+                    </div>
+                    <div className="text-[10px] text-center mb-4 text-[#111827] leading-tight">
+                      Tebrikler Can, <br/>yılan ekranı kapladı!
+                    </div>
+                    <div className="text-[10px] text-center mb-2 text-[#111827]">
+                      Score: {score}
+                    </div>
+                    <div className="text-[8px] animate-pulse mt-2 text-[#111827]">
+                      Press ENTER/Btn
+                    </div>
+                  </div>
+                )}
+
+                {isPaused && !gameOver && !hasWon && (
                   <div className="absolute inset-0 bg-[#879571]/90 flex flex-col items-center justify-center font-bold z-10 backdrop-blur-sm">
                     <div className="text-xl animate-pulse text-[#111827] drop-shadow-md">
                       PAUSED
@@ -140,6 +158,7 @@ function App() {
           quitGame={quitGame}
           gameOver={gameOver}
           isPaused={isPaused}
+          hasWon={hasWon}
         />
 
         {/* Decorative Dialpad Grid (Non-functional aesthetic) */}
