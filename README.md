@@ -2,6 +2,8 @@
 
 Welcome to **SnakeForCan**, a meticulous recreation of the classic Nokia 3310 Snake game built with modern web technologies. This project was born as a first "Vibe Coding" experiment, dedicated to a friend (Can) who really wanted to play the classic Snake!
 
+🎮 **Play Live:** [snakeforcan.vercel.app](https://snakeforcan.vercel.app/)
+
 ## ✨ Features
 
 - **Iconic Gameplay**: The classic, non-stop grid-based snake experience. Grow longer and move faster as you eat food.
