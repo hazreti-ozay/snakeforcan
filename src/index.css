@@ -1,0 +1,130 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+@import "tailwindcss";
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  justify-content: center;
+  min-width: 320px;
+  min-height: 100vh;
+  /* Retro Desk Spotlight Background */
+  background: radial-gradient(
+    circle at center,
+    #2d3748 0%,
+    #0f172a 70%,
+    #020617 100%
+  );
+  color: #111827; /* Dark olive / near black */
+  font-family: "Press Start 2P", system-ui, sans-serif;
+  overflow: hidden; /* Prevent scrolling on desktop if not needed */
+}
+
+/* Add a faint grid background to the void to give texture */
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 30px 30px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* CRT/LCD Scanlines */
+.scanlines {
+  position: relative;
+  overflow: hidden;
+}
+
+.scanlines::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(18, 16, 16, 0) 50%,
+    rgba(0, 0, 0, 0.15) 50% /* Darkened slightly for more contrast */
+  );
+  background-size: 100% 4px;
+  z-index: 50;
+  pointer-events: none;
+}
+
+/* LCD Vignette overlay to mimic actual unlit LCD corners */
+.lcd-screen {
+  position: relative;
+}
+
+.lcd-screen::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  z-index: 40;
+}
+
+/* Screen Power-On Animation */
+@keyframes screenOn {
+  0% { 
+    filter: brightness(0) contrast(1.5); 
+    background-color: #020617;
+  }
+  20% { 
+    filter: brightness(1.5) contrast(1.2); 
+    background-color: #a4b48d;
+  }
+  100% { 
+    filter: brightness(1) contrast(1); 
+    background-color: #879571;
+  }
+}
+
+.animate-screen-on {
+  animation: screenOn 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+/* Simulating inactive pixels in the background */
+.lcd-bg-pixels {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    linear-gradient(rgba(17, 24, 39, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(17, 24, 39, 0.08) 1px, transparent 1px);
+  background-size: 16px 16px; /* Match cell size approx */
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Glass glare reflection on the screen */
+.screen-glare {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(20deg);
+  pointer-events: none;
+  z-index: 60;
+}
