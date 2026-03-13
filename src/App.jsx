@@ -14,6 +14,7 @@ function App() {
     setIsPaused,
     changeDirection,
     resetGame,
+    quitGame,
   } = useSnakeGame();
 
   useEffect(() => {
@@ -136,7 +137,9 @@ function App() {
           changeDirection={changeDirection}
           setIsPaused={setIsPaused}
           resetGame={resetGame}
+          quitGame={quitGame}
           gameOver={gameOver}
+          isPaused={isPaused}
         />
 
         {/* Decorative Dialpad Grid (Non-functional aesthetic) */}

@@ -1,4 +1,4 @@
-export const NokiaControls = ({ changeDirection, setIsPaused, resetGame, gameOver }) => {
+export const NokiaControls = ({ changeDirection, setIsPaused, resetGame, quitGame, gameOver, isPaused }) => {
 
   // A helper function to trigger the direction immediately when pressed
   const handleDir = (dir) => (e) => {
@@ -12,6 +12,13 @@ export const NokiaControls = ({ changeDirection, setIsPaused, resetGame, gameOve
       resetGame();
     } else {
       setIsPaused(p => !p);
+    }
+  };
+
+  const handleQuit = (e) => {
+    e.preventDefault();
+    if (!gameOver) {
+      quitGame();
     }
   };
 
@@ -85,13 +92,15 @@ export const NokiaControls = ({ changeDirection, setIsPaused, resetGame, gameOve
           onPointerDown={handleAction}
           className={actionStyle}
         >
-          {gameOver ? 'SELECT' : 'PAUSE'}
+          {gameOver ? 'START' : isPaused ? 'RESUME' : 'PAUSE'}
         </button>
         <button 
+          onPointerDown={handleQuit}
           className={actionStyle.replace('from-[#1e293b] to-[#0f172a]', 'from-[#b5b9c0] to-[#8a8f96]').replace('text-zinc-200', 'text-zinc-800')}
-          style={{ opacity: 0.8, cursor: 'not-allowed' }}
+          style={{ opacity: gameOver ? 0.8 : 1, cursor: gameOver ? 'not-allowed' : 'pointer' }}
+          disabled={gameOver}
         >
-          CLEAR
+          QUIT
         </button>
       </div>
     </div>

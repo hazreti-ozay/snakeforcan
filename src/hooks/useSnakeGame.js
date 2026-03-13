@@ -49,6 +49,11 @@ export function useSnakeGame() {
     setIsPaused(false);
   }, []);
 
+  const quitGame = useCallback(() => {
+    setGameOver(true);
+    setIsPaused(false);
+  }, []);
+
   const changeDirection = useCallback((newDir) => {
     // Prevent 180 degree turns based on the LAST PROCESSED direction, not current state
     const currentProcessed = lastProcessedDirectionRef.current;
@@ -123,5 +128,6 @@ export function useSnakeGame() {
     setIsPaused,
     changeDirection,
     resetGame,
+    quitGame,
   };
 }
